@@ -15,17 +15,45 @@ type WantedBlacklistApp = {
   refresh(): Promise<void>;
 };
 
+function getRemovalTarget(card: HTMLElement) {
+  if (card.parentElement && card.parentElement !== card.ownerDocument.body) {
+    return card.parentElement;
+  }
+
+  return card;
+}
+
+function syncCardOpacity(card: HTMLElement, emphasized: boolean) {
+  card.style.opacity =
+    card.dataset.wbStatus === "-" && !emphasized ? "0.5" : "1";
+}
+
+function attachCardStateListeners(card: HTMLElement) {
+  if (card.dataset.wbStateListeners === "true") {
+    return;
+  }
+
+  const emphasize = () => syncCardOpacity(card, true);
+  const relax = () => syncCardOpacity(card, false);
+
+  card.addEventListener("mouseenter", emphasize);
+  card.addEventListener("mouseleave", relax);
+  card.addEventListener("focusin", emphasize);
+  card.addEventListener("focusout", relax);
+  card.dataset.wbStateListeners = "true";
+}
+
 function applyCardState(card: HTMLElement, status: CompanyStatus) {
   card.dataset.wbStatus = status;
 
   if (isHiddenStatus(status)) {
-    card.hidden = true;
-    card.style.display = "none";
+    getRemovalTarget(card).remove();
     return;
   }
 
   card.hidden = false;
   card.style.display = "";
+  syncCardOpacity(card, false);
 }
 
 export function createWantedBlacklistApp(
@@ -58,13 +86,19 @@ export function createWantedBlacklistApp(
       card.style.position = "relative";
     }
 
+    attachCardStateListeners(card);
+
     attachOverlay({
       card,
-      companyName,
       status,
-      onStatusChange: async (nextCompanyName, nextStatus) => {
+      onStatusChange: async (nextStatus) => {
+        const currentCompanyName = extractCompanyName(card);
+        if (!currentCompanyName) {
+          return;
+        }
+
         applyCardState(card, nextStatus);
-        settings = await store.setCompanyStatus(nextCompanyName, nextStatus);
+        settings = await store.setCompanyStatus(currentCompanyName, nextStatus);
         await refresh();
       }
     });

@@ -52,16 +52,24 @@ function createCard(companyName: string) {
   return card;
 }
 
+function createWrappedCard(companyName: string) {
+  const wrapper = document.createElement("li");
+  const card = createCard(companyName);
+  wrapper.append(card);
+  return { wrapper, card };
+}
+
 async function flushUi() {
+  await new Promise((resolve) => setTimeout(resolve, 0));
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 describe("createWantedBlacklistApp", () => {
   it("processes cards on the initial scan", async () => {
     document.body.innerHTML = "";
-    const hiddenCard = createCard("Wanted Lab");
-    const visibleCard = createCard("OpenAI");
-    document.body.append(hiddenCard, visibleCard);
+    const hidden = createWrappedCard("Wanted Lab");
+    const visible = createWrappedCard("OpenAI");
+    document.body.append(hidden.wrapper, visible.wrapper);
 
     const app = createWantedBlacklistApp(
       document,
@@ -75,9 +83,10 @@ describe("createWantedBlacklistApp", () => {
 
     await app.initialize();
 
-    expect(hiddenCard.hidden).toBe(true);
-    expect(visibleCard.hidden).toBe(false);
-    expect(visibleCard.querySelector('[data-wb-overlay="true"]')).not.toBeNull();
+    expect(document.body.contains(hidden.wrapper)).toBe(false);
+    expect(document.body.contains(visible.wrapper)).toBe(true);
+    expect(visible.card.hidden).toBe(false);
+    expect(visible.card.querySelector('[data-wb-overlay="true"]')).not.toBeNull();
   });
 
   it("processes newly inserted cards through MutationObserver", async () => {
@@ -94,18 +103,17 @@ describe("createWantedBlacklistApp", () => {
 
     await app.initialize();
 
-    const lateCard = createCard("Wanted Lab");
-    document.body.append(lateCard);
+    const late = createWrappedCard("Wanted Lab");
+    document.body.append(late.wrapper);
     await flushUi();
 
-    expect(lateCard.hidden).toBe(true);
-    expect(lateCard.querySelector('[data-wb-overlay="true"]')).not.toBeNull();
+    expect(document.body.contains(late.wrapper)).toBe(false);
   });
 
   it("updates overlay actions when the same card node is reused for a different company", async () => {
     document.body.innerHTML = "";
-    const card = createCard("Wanted Lab");
-    document.body.append(card);
+    const wrapped = createWrappedCard("Wanted Lab");
+    document.body.append(wrapped.wrapper);
     const store = createStore({
       companies: {},
       defaultUnspecifiedStatus: "+"
@@ -114,10 +122,11 @@ describe("createWantedBlacklistApp", () => {
     const app = createWantedBlacklistApp(document, store);
     await app.initialize();
 
-    card.querySelector(".CompanyNameWithLocationPeriod__name")!.textContent = "OpenAI";
+    wrapped.card.querySelector(".CompanyNameWithLocationPeriod__name")!.textContent =
+      "OpenAI";
     await app.refresh();
 
-    card.querySelector<HTMLButtonElement>('button[data-status="x"]')!.click();
+    wrapped.card.querySelector<HTMLButtonElement>('button[data-status="x"]')!.click();
     await flushUi();
 
     expect(store.snapshot().companies["OpenAI"]).toBe("x");

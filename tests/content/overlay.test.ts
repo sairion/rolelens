@@ -62,9 +62,36 @@ function createCard(companyName: string) {
 
 async function flushUi() {
   await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 describe("createWantedBlacklistApp overlay behavior", () => {
+  it("dims low-interest cards to 50 percent opacity and restores them on hover", async () => {
+    document.body.innerHTML = "";
+    const card = createCard("Wanted Lab");
+    document.body.append(card);
+
+    const app = createWantedBlacklistApp(
+      document,
+      createStore({
+        companies: {
+          "Wanted Lab": "-"
+        },
+        defaultUnspecifiedStatus: "+"
+      })
+    );
+
+    await app.initialize();
+
+    expect(card.style.opacity).toBe("0.5");
+
+    card.dispatchEvent(new Event("mouseenter", { bubbles: true }));
+    expect(card.style.opacity).toBe("1");
+
+    card.dispatchEvent(new Event("mouseleave", { bubbles: true }));
+    expect(card.style.opacity).toBe("0.5");
+  });
+
   it("adds a hover-only button group in the thumbnail top-left and highlights the effective state", async () => {
     document.body.innerHTML = "";
     const card = createCard("Wanted Lab");
@@ -105,8 +132,10 @@ describe("createWantedBlacklistApp overlay behavior", () => {
 
   it("hides the card immediately when x is clicked", async () => {
     document.body.innerHTML = "";
+    const wrapper = document.createElement("li");
     const card = createCard("Wanted Lab");
-    document.body.append(card);
+    wrapper.append(card);
+    document.body.append(wrapper);
     let resolveSave: (() => void) | null = null;
 
     const app = createWantedBlacklistApp(
@@ -150,8 +179,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     const button = card.querySelector<HTMLButtonElement>('button[data-status="x"]');
     button!.click();
 
-    expect(card.hidden).toBe(true);
-    expect(card.style.display).toBe("none");
+    expect(document.body.contains(wrapper)).toBe(false);
 
     resolveSave?.();
     await flushUi();
@@ -202,9 +230,13 @@ describe("createWantedBlacklistApp overlay behavior", () => {
 
   it("propagates a saved status change across duplicate company cards", async () => {
     document.body.innerHTML = "";
+    const firstWrapper = document.createElement("li");
+    const secondWrapper = document.createElement("li");
     const firstCard = createCard("Wanted Lab");
     const secondCard = createCard("Wanted Lab");
-    document.body.append(firstCard, secondCard);
+    firstWrapper.append(firstCard);
+    secondWrapper.append(secondCard);
+    document.body.append(firstWrapper, secondWrapper);
 
     const app = createWantedBlacklistApp(
       document,
@@ -221,7 +253,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
       .click();
     await flushUi();
 
-    expect(firstCard.hidden).toBe(true);
-    expect(secondCard.hidden).toBe(true);
+    expect(document.body.contains(firstWrapper)).toBe(false);
+    expect(document.body.contains(secondWrapper)).toBe(false);
   });
 });

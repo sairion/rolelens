@@ -6,9 +6,8 @@ export const OVERLAY_ATTRIBUTE = "data-wb-overlay";
 
 type OverlayOptions = {
   card: HTMLElement;
-  companyName: string;
   status: CompanyStatus;
-  onStatusChange: (companyName: string, status: CompanyStatus) => Promise<void>;
+  onStatusChange: (status: CompanyStatus) => Promise<void>;
 };
 
 const STATUS_OPTIONS: CompanyStatus[] = ["+", "-", "x"];
@@ -81,7 +80,6 @@ function updateSelectedStatus(overlay: HTMLElement, status: CompanyStatus) {
 
 export function attachOverlay({
   card,
-  companyName,
   status,
   onStatusChange
 }: OverlayOptions) {
@@ -133,13 +131,8 @@ export function attachOverlay({
       button.addEventListener("click", async (event) => {
         event.preventDefault();
         event.stopPropagation();
-        const currentCompanyName = overlay!.dataset.companyName;
-        if (!currentCompanyName) {
-          return;
-        }
-
         updateSelectedStatus(overlay!, nextStatus);
-        await onStatusChange(currentCompanyName, nextStatus);
+        await onStatusChange(nextStatus);
       });
       overlay.append(button);
     });
@@ -157,7 +150,6 @@ export function attachOverlay({
     anchor.append(overlay);
   }
 
-  overlay.dataset.companyName = companyName;
   updateSelectedStatus(overlay, status);
   return overlay;
 }
