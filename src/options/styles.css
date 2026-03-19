@@ -1,0 +1,173 @@
+:root {
+  color-scheme: light;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #f6efe4 0%, #fffdfa 100%);
+  color: #18202b;
+}
+
+body {
+  margin: 0;
+  min-width: 720px;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 48px 32px;
+}
+
+.hero {
+  margin: 0 auto 24px;
+  max-width: 720px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #9c3d1f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.1;
+}
+
+.lede {
+  max-width: 56ch;
+  color: #49525d;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.panel {
+  margin: 0 auto;
+  max-width: 720px;
+  padding: 24px;
+  border: 1px solid rgba(24, 32, 43, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 60px rgba(24, 32, 43, 0.08);
+}
+
+.panel-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span,
+.subpanel h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  height: 44px;
+  border: 1px solid rgba(24, 32, 43, 0.12);
+  border-radius: 14px;
+  padding: 0 14px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.primary-action {
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: #18202b;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.subpanel {
+  display: grid;
+  gap: 12px;
+}
+
+.segmented {
+  display: inline-flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.segmented label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(24, 32, 43, 0.12);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.company-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.company-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid rgba(24, 32, 43, 0.08);
+  border-radius: 18px;
+  background: rgba(246, 239, 228, 0.45);
+}
+
+.company-list strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-button {
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(156, 61, 31, 0.12);
+  color: #9c3d1f;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  body {
+    min-width: 0;
+  }
+
+  .page {
+    padding: 24px 16px;
+  }
+
+  .composer,
+  .company-list li {
+    grid-template-columns: 1fr;
+  }
+}

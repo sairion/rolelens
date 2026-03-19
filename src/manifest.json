@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Wanted Blacklist",
+  "version": "0.1.0",
+  "description": "Hide or classify Wanted job cards by exact company name.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://www.wanted.co.kr/wdlist/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.wanted.co.kr/wdlist/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "options_page": "options.html"
+}
