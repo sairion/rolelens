@@ -3,11 +3,24 @@
   "name": "Wanted Blacklist",
   "version": "0.1.0",
   "description": "Hide or classify Wanted job cards by exact company name.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
   "permissions": ["storage"],
-  "host_permissions": ["https://www.wanted.co.kr/wdlist/*"],
+  "host_permissions": ["https://www.wanted.co.kr/*"],
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    }
+  },
   "content_scripts": [
     {
-      "matches": ["https://www.wanted.co.kr/wdlist/*"],
+      "matches": ["https://www.wanted.co.kr/*"],
       "js": ["content.js"]
     }
   ],
