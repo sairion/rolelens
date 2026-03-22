@@ -2,7 +2,7 @@ import { EyeOff, Minus, Plus } from "lucide";
 
 import type { CompanyStatus } from "../shared/settings";
 
-export const OVERLAY_ATTRIBUTE = "data-wb-overlay";
+export const OVERLAY_ATTRIBUTE = "data-role-lens-overlay";
 
 type OverlayOptions = {
   card: HTMLElement;

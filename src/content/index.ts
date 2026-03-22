@@ -10,11 +10,6 @@ import type { CompanyStatus, ExtensionSettings } from "../shared/settings";
 
 const JOB_CARD_SELECTOR = '[data-cy="job-card"]';
 
-type WantedBlacklistApp = {
-  initialize(): Promise<void>;
-  refresh(): Promise<void>;
-};
-
 function getRemovalTarget(card: HTMLElement) {
   if (card.parentElement && card.parentElement !== card.ownerDocument.body) {
     return card.parentElement;
@@ -25,11 +20,11 @@ function getRemovalTarget(card: HTMLElement) {
 
 function syncCardOpacity(card: HTMLElement, emphasized: boolean) {
   card.style.opacity =
-    card.dataset.wbStatus === "-" && !emphasized ? "0.5" : "1";
+    card.dataset.roleLensStatus === "-" && !emphasized ? "0.5" : "1";
 }
 
 function attachCardStateListeners(card: HTMLElement) {
-  if (card.dataset.wbStateListeners === "true") {
+  if (card.dataset.roleLensStateListeners === "true") {
     return;
   }
 
@@ -40,11 +35,11 @@ function attachCardStateListeners(card: HTMLElement) {
   card.addEventListener("mouseleave", relax);
   card.addEventListener("focusin", emphasize);
   card.addEventListener("focusout", relax);
-  card.dataset.wbStateListeners = "true";
+  card.dataset.roleLensStateListeners = "true";
 }
 
 function applyCardState(card: HTMLElement, status: CompanyStatus) {
-  card.dataset.wbStatus = status;
+  card.dataset.roleLensStatus = status;
 
   if (isHiddenStatus(status)) {
     getRemovalTarget(card).remove();
@@ -56,10 +51,15 @@ function applyCardState(card: HTMLElement, status: CompanyStatus) {
   syncCardOpacity(card, false);
 }
 
-export function createWantedBlacklistApp(
+type RoleLensApp = {
+  initialize(): Promise<void>;
+  refresh(): Promise<void>;
+};
+
+export function createRoleLensApp(
   doc: Document,
   store: SettingsStore
-): WantedBlacklistApp {
+): RoleLensApp {
   let settings: ExtensionSettings | null = null;
   let observer: MutationObserver | null = null;
   let refreshQueued = false;
@@ -142,7 +142,7 @@ export function createWantedBlacklistApp(
 }
 
 if (typeof document !== "undefined" && typeof chrome !== "undefined") {
-  void createWantedBlacklistApp(
+  void createRoleLensApp(
     document,
     createSettingsStore(createChromeStorageArea())
   ).initialize();

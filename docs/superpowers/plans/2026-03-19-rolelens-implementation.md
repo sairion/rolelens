@@ -1,10 +1,10 @@
-# Wanted Blacklist Extension Implementation Plan
+# RoleLens Extension Implementation Plan
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a Chrome extension for `wanted.co.kr` that hides or annotates job cards by exact company name, supports in-page `+ / - / x` hover controls, and provides an options page for editing saved company statuses and the default unspecified status.
 
-**Architecture:** Use a small TypeScript Chrome Extension MV3 project with a shared settings module, an options page UI, and a content script that scans Wanted job cards, resolves effective status, and attaches hover controls. Bundle the TypeScript entry points into plain browser-consumable files and cover shared logic plus DOM behavior with Vitest and jsdom.
+**Architecture:** Use a small TypeScript Chrome Extension MV3 project with a shared settings module, an options page UI, and a content script that scans job cards on `wanted.co.kr`, resolves effective status, and attaches hover controls. Bundle the TypeScript entry points into plain browser-consumable files and cover shared logic plus DOM behavior with Vitest and jsdom.
 
 **Tech Stack:** `pnpm`, TypeScript, esbuild, Vitest, jsdom, Chrome Extension Manifest V3
 
@@ -57,7 +57,7 @@ Expected: PASS.
 Run:
 ```bash
 git add .gitignore package.json pnpm-lock.yaml scripts/build.mjs src/shared/settings.ts tests/smoke/project-structure.test.ts tsconfig.json vitest.config.ts
-git commit -m "chore: scaffold wanted blacklist extension"
+git commit -m "chore: scaffold rolelens extension"
 ```
 
 ### Task 2: Add static extension shell
@@ -296,7 +296,7 @@ Expected: PASS.
 Run:
 ```bash
 git add src/content/index.ts src/manifest.json tests/content/content-script.test.ts tests/smoke/build-output.test.ts
-git commit -m "feat: complete wanted blacklist content script"
+git commit -m "feat: complete rolelens content script"
 ```
 
 ## Chunk 4: Final Verification
@@ -318,12 +318,12 @@ Expected: PASS with a complete `dist/` directory containing manifest, options as
 
 - [ ] **Step 3: Verify requirements against the spec**
 
-Check `/Users/jaeholee/work/wanted-blacklist/docs/superpowers/specs/2026-03-19-wanted-blacklist-design.md` line by line against the implementation and note any gaps before reporting completion.
+Check `/Users/jaeholee/work/wanted-blacklist/docs/superpowers/specs/2026-03-19-rolelens-design.md` line by line against the implementation and note any gaps before reporting completion.
 
 - [ ] **Step 4: Commit**
 
 Run:
 ```bash
 git add .
-git commit -m "feat: implement wanted blacklist extension"
+git commit -m "feat: implement rolelens extension"
 ```

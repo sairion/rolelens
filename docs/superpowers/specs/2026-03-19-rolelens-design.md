@@ -1,4 +1,4 @@
-# Wanted Blacklist Extension Design
+# RoleLens Extension Design
 
 ## Summary
 
@@ -13,7 +13,7 @@ The extension removes cards when the company status is `x`. Companies without an
 
 ## Goals
 
-- Let users save exact company-name preferences for Wanted job cards
+- Let users save exact company-name preferences for job cards on `wanted.co.kr`
 - Hide cards immediately when a company is marked `x`
 - Show lightweight in-page controls so users can classify companies without leaving the listing page
 - Provide an options page for editing the saved list and the default unspecified status

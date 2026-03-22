@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createWantedBlacklistApp } from "../../src/content/index";
+import { createRoleLensApp } from "../../src/content/index";
 import type { CompanyStatus, ExtensionSettings } from "../../src/shared/settings";
 
 function createStore(initialSettings: ExtensionSettings) {
@@ -64,14 +64,14 @@ async function flushUi() {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe("createWantedBlacklistApp", () => {
+describe("createRoleLensApp", () => {
   it("processes cards on the initial scan", async () => {
     document.body.innerHTML = "";
     const hidden = createWrappedCard("Wanted Lab");
     const visible = createWrappedCard("OpenAI");
     document.body.append(hidden.wrapper, visible.wrapper);
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {
@@ -86,12 +86,14 @@ describe("createWantedBlacklistApp", () => {
     expect(document.body.contains(hidden.wrapper)).toBe(false);
     expect(document.body.contains(visible.wrapper)).toBe(true);
     expect(visible.card.hidden).toBe(false);
-    expect(visible.card.querySelector('[data-wb-overlay="true"]')).not.toBeNull();
+    expect(
+      visible.card.querySelector('[data-role-lens-overlay="true"]')
+    ).not.toBeNull();
   });
 
   it("processes newly inserted cards through MutationObserver", async () => {
     document.body.innerHTML = "";
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {
@@ -119,7 +121,7 @@ describe("createWantedBlacklistApp", () => {
       defaultUnspecifiedStatus: "+"
     });
 
-    const app = createWantedBlacklistApp(document, store);
+    const app = createRoleLensApp(document, store);
     await app.initialize();
 
     wrapped.card.querySelector(".CompanyNameWithLocationPeriod__name")!.textContent =

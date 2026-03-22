@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createWantedBlacklistApp } from "../../src/content/index";
+import { createRoleLensApp } from "../../src/content/index";
 import type { CompanyStatus, ExtensionSettings } from "../../src/shared/settings";
 
 function createStore(initialSettings: ExtensionSettings) {
@@ -65,13 +65,13 @@ async function flushUi() {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe("createWantedBlacklistApp overlay behavior", () => {
+describe("createRoleLensApp overlay behavior", () => {
   it("dims low-interest cards to 50 percent opacity and restores them on hover", async () => {
     document.body.innerHTML = "";
     const card = createCard("Wanted Lab");
     document.body.append(card);
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {
@@ -97,7 +97,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     const card = createCard("Wanted Lab");
     document.body.append(card);
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {
@@ -109,7 +109,9 @@ describe("createWantedBlacklistApp overlay behavior", () => {
 
     await app.initialize();
 
-    const overlay = card.querySelector<HTMLElement>('[data-wb-overlay="true"]');
+    const overlay = card.querySelector<HTMLElement>(
+      '[data-role-lens-overlay="true"]'
+    );
     expect(overlay).not.toBeNull();
     expect(overlay!.style.opacity).toBe("0");
     expect(overlay!.style.pointerEvents).toBe("none");
@@ -138,7 +140,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     document.body.append(wrapper);
     let resolveSave: (() => void) | null = null;
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       {
         async load() {
@@ -190,7 +192,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     const card = createCard("Wanted Lab");
     document.body.append(card);
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {},
@@ -200,7 +202,9 @@ describe("createWantedBlacklistApp overlay behavior", () => {
 
     await app.initialize();
 
-    const overlay = card.querySelector<HTMLElement>('[data-wb-overlay="true"]');
+    const overlay = card.querySelector<HTMLElement>(
+      '[data-role-lens-overlay="true"]'
+    );
     const button = overlay!.querySelector<HTMLButtonElement>('button[data-status="+"]');
 
     card.dispatchEvent(new Event("mouseenter", { bubbles: true }));
@@ -214,7 +218,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     const card = createCard("Wanted Lab");
     document.body.append(card);
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {},
@@ -225,7 +229,9 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     await app.initialize();
     await app.refresh();
 
-    expect(card.querySelectorAll('[data-wb-overlay="true"]')).toHaveLength(1);
+    expect(card.querySelectorAll('[data-role-lens-overlay="true"]')).toHaveLength(
+      1
+    );
   });
 
   it("propagates a saved status change across duplicate company cards", async () => {
@@ -238,7 +244,7 @@ describe("createWantedBlacklistApp overlay behavior", () => {
     secondWrapper.append(secondCard);
     document.body.append(firstWrapper, secondWrapper);
 
-    const app = createWantedBlacklistApp(
+    const app = createRoleLensApp(
       document,
       createStore({
         companies: {},

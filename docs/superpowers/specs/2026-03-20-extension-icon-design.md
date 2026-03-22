@@ -1,4 +1,4 @@
-# Wanted Blacklist Extension Icon Design
+# RoleLens Extension Icon Design
 
 **Goal:** Add a simple monochrome Chrome extension icon set that communicates company sorting and hide/show controls at toolbar sizes.
 
