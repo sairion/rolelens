@@ -3,3 +3,6 @@ dist/
 coverage/
 .worktrees/
 worktrees/
+*.pem
+release/*.zip
+release/*.crx
