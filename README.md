@@ -30,9 +30,11 @@
 ```bash
 pnpm install
 pnpm build
+pnpm create-extension
 ```
 
 빌드 후 생성되는 `dist` 폴더를 크롬의 `확장 프로그램 > 압축해제된 확장 프로그램을 로드`에서 선택하면 됩니다.
+배포용 산출물은 `release/` 아래에 Chrome Web Store 업로드용 ZIP과 로컬 설치용 CRX로 생성됩니다.
 
 ## 개발
 

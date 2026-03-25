@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "create-extension": "node scripts/create-extension.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
