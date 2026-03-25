@@ -29,12 +29,12 @@ describe("build artifacts", () => {
       action?: {
         default_icon?: Record<string, string>;
       };
-      host_permissions: string[];
+      host_permissions?: string[];
       content_scripts: Array<{ matches: string[] }>;
       icons?: Record<string, string>;
     };
 
-    expect(manifest.host_permissions).toEqual(["https://www.wanted.co.kr/*"]);
+    expect(manifest.host_permissions).toBeUndefined();
     expect(manifest.content_scripts[0]?.matches).toEqual([
       "https://www.wanted.co.kr/*"
     ]);

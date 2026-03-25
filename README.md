@@ -43,4 +43,3 @@ pnpm test
 ## 권한
 
 - `storage`: 회사별 상태와 기본 설정 저장
-- `https://www.wanted.co.kr/*`: 원티드 페이지에서 공고 카드 제어
